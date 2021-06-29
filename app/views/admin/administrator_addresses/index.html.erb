@@ -1,0 +1,45 @@
+<div class="page-header">
+  <%= link_to new_admin_administrator_administrator_address_path(@administrator), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Novo Endereço
+  <% end %>
+  <%= link_to admin_administrator_path(@administrator), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Voltar
+  <% end %>
+  <h1>Listando Endereços</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Rua</th>
+        <th>Numero</th>
+        <th>Bairro</th>
+        <th>Cep</th>
+        <th>Bairro</th>
+        <th>Estado</th>
+        <th>Admin administrators</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @admin_administrator_addresses) do |admin_administrator_address| %>
+        <td><%= admin_administrator_address.rua %></td>
+        <td><%= admin_administrator_address.numero %></td>
+        <td><%= admin_administrator_address.bairro %></td>
+        <td><%= admin_administrator_address.cep %></td>
+        <td><%= admin_administrator_address.bairro %></td>
+        <td><%= admin_administrator_address.estado %></td>
+        <td><%= admin_administrator_address.admin_administrators %></td>
+        <td><%= link_to 'Mostrar', admin_administrator_administrator_address_path(@administrator, admin_administrator_address) %></td>
+        <td><%= link_to 'Editar', edit_administrator_administrator_address_path(admin_administrator_address) %></td>
+        <td><%= link_to 'Remover', admin_administrator_administrator_address_path(@administrator, admin_administrator_address), method: :delete, data: { confirm: 'Você tem certeza?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

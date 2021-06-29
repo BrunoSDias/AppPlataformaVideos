@@ -1,0 +1,32 @@
+<div class="page-header">
+  <%= link_to admin_administrator_administrator_addresses_path(@administrator), class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Voltar
+  <% end %>
+  <%= link_to edit_admin_administrator_administrator_address_path(@administrator, @admin_administrator_address), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Editar
+  <% end %>
+  <h1>Mostrar Endereço</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Rua:</dt>
+  <dd><%= @admin_administrator_address.rua %></dd>
+
+  <dt>Numero:</dt>
+  <dd><%= @admin_administrator_address.numero %></dd>
+
+  <dt>Bairro:</dt>
+  <dd><%= @admin_administrator_address.bairro %></dd>
+
+  <dt>Cep:</dt>
+  <dd><%= @admin_administrator_address.cep %></dd>
+
+  <dt>Bairro:</dt>
+  <dd><%= @admin_administrator_address.bairro %></dd>
+
+  <dt>Estado:</dt>
+  <dd><%= @admin_administrator_address.estado %></dd>
+
+</dl>

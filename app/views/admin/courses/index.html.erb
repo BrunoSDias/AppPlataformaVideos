@@ -1,0 +1,33 @@
+<div class="page-header">
+  <%= link_to new_admin_course_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Novo Course
+  <% end %>
+  <h1>Listando admin_courses</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Nome</th>
+            <th>Descricao</th>
+            <th>Link</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @admin_courses) do |admin_course| %>
+            <td><%= admin_course.nome %></td>
+            <td><%= admin_course.descricao %></td>
+            <td><%= admin_course.link %></td>
+            <td><%= link_to 'Mostrar', admin_course %></td>
+        <td><%= link_to 'Editar', edit_admin_course_path(admin_course) %></td>
+        <td><%= link_to 'Remover', admin_course, method: :delete, data: { confirm: 'Você tem certeza?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

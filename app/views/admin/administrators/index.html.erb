@@ -1,0 +1,33 @@
+<div class="page-header">
+  <%= link_to new_admin_administrator_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Novo Administrator
+  <% end %>
+  <h1>Listando Administradores</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Telefone</th>
+        <th>Cpf</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @admin_administrators) do |admin_administrator| %>
+        <td><%= admin_administrator.nome %></td>
+        <td><%= admin_administrator.telefone %></td>
+        <td><%= admin_administrator.cpf %></td>
+        <td><%= link_to 'Mostrar', admin_administrator %></td>
+        <td><%= link_to 'Editar', edit_admin_administrator_path(admin_administrator) %></td>
+        <td><%= link_to 'Remover', admin_administrator, method: :delete, data: { confirm: 'Você tem certeza?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

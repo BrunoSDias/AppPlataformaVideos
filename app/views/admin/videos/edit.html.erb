@@ -1,0 +1,13 @@
+<div class="page-header">
+  <%= link_to admin_course_videos_path(@course), class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Voltar
+  <% end %>
+  <%= link_to admin_course_videos_path(@course, @admin_video), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-info-sign"></span>
+    Mostrar
+  <% end %>
+  <h1>Editar admin_video</h1>
+</div>
+
+<%= render 'form' %>

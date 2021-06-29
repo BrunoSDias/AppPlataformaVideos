@@ -1,0 +1,33 @@
+<div class="page-header">
+  <%= link_to admin_administrators_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Voltar
+  <% end %>
+  <%= link_to edit_admin_administrator_path(@admin_administrator), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Editar
+  <% end %>
+  <h1>Mostrar Administrador</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Nome:</dt>
+  <dd><%= @admin_administrator.nome %></dd>
+
+  <dt>Telefone:</dt>
+  <dd><%= @admin_administrator.telefone %></dd>
+
+  <dt>Cpf:</dt>
+  <dd><%= @admin_administrator.cpf %></dd>
+
+</dl>
+  
+<%= link_to admin_administrator_administrator_addresses_path(@admin_administrator), class: 'btn btn-primary' do %>
+  <span class="glyphicon glyphicon-pencil"></span>
+  Endereços
+<% end %>
+  
+<%= link_to admin_administrator_bank_accounts_path(@admin_administrator), class: 'btn btn-primary' do %>
+  <span class="glyphicon glyphicon-pencil"></span>
+  Conta Bancária
+<% end %>
