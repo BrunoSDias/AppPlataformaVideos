@@ -1,0 +1,25 @@
+<div class="page-header">
+  <%= link_to edit_sales_seller_path(@sales_seller), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Editar
+  <% end %>
+  <h1>Mostrar sales_seller</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Nome:</dt>
+  <dd><%= @sales_seller.nome %></dd>
+
+  <dt>Cpf:</dt>
+  <dd><%= @sales_seller.cpf %></dd>
+
+  <dt>Telefone:</dt>
+  <dd><%= @sales_seller.telefone %></dd>
+
+  <dt>Email:</dt>
+  <dd><%= @sales_seller.email %></dd>
+
+  <dt>Password digest:</dt>
+  <dd><%= @sales_seller.password_digest %></dd>
+
+</dl>

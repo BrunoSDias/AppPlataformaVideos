@@ -10,22 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_29_011648) do
+ActiveRecord::Schema.define(version: 2021_07_06_005749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "admin_administrator_addresses", force: :cascade do |t|
-    t.string "rua"
-    t.integer "numero"
-    t.string "bairro"
-    t.integer "cep"
-    t.string "estado"
-    t.bigint "admin_administrators_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["admin_administrators_id"], name: "index_admin_administrator_addresses_on_admin_administrators_id"
-  end
 
   create_table "admin_administrators", force: :cascade do |t|
     t.string "nome"
@@ -35,34 +23,59 @@ ActiveRecord::Schema.define(version: 2021_06_29_011648) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "admin_bank_accounts", force: :cascade do |t|
+  create_table "sales_addresses", force: :cascade do |t|
+    t.string "rua"
     t.integer "numero"
+    t.string "estado"
+    t.string "cep"
+    t.string "bairro"
+    t.bigint "sales_seller_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sales_seller_id"], name: "index_sales_addresses_on_sales_seller_id"
+  end
+
+  create_table "sales_bank_accounts", force: :cascade do |t|
+    t.integer "conta"
     t.integer "agencia"
     t.integer "banco"
-    t.bigint "admin_administrator_id"
+    t.bigint "sales_seller_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["admin_administrator_id"], name: "index_admin_bank_accounts_on_admin_administrator_id"
+    t.index ["sales_seller_id"], name: "index_sales_bank_accounts_on_sales_seller_id"
   end
 
-  create_table "admin_courses", force: :cascade do |t|
+  create_table "sales_courses", force: :cascade do |t|
+    t.string "nome"
+    t.string "descricao"
+    t.string "link"
+    t.bigint "sales_seller_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sales_seller_id"], name: "index_sales_courses_on_sales_seller_id"
+  end
+
+  create_table "sales_sellers", force: :cascade do |t|
+    t.string "nome"
+    t.string "cpf"
+    t.bigint "telefone"
+    t.string "email"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sales_videos", force: :cascade do |t|
     t.string "nome"
     t.text "descricao"
     t.string "link"
+    t.bigint "sales_course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["sales_course_id"], name: "index_sales_videos_on_sales_course_id"
   end
 
-  create_table "admin_videos", force: :cascade do |t|
-    t.string "nome"
-    t.text "descricao"
-    t.string "link"
-    t.bigint "admin_course_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["admin_course_id"], name: "index_admin_videos_on_admin_course_id"
-  end
-
-  add_foreign_key "admin_administrator_addresses", "admin_administrators", column: "admin_administrators_id"
-  add_foreign_key "admin_videos", "admin_courses"
+  add_foreign_key "sales_addresses", "sales_sellers"
+  add_foreign_key "sales_bank_accounts", "sales_sellers"
+  add_foreign_key "sales_videos", "sales_courses"
 end

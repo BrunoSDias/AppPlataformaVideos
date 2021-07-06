@@ -1,0 +1,26 @@
+<div class="page-header">
+  <%= link_to sales_bank_accounts_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Voltar
+  <% end %>
+  <%= link_to edit_sales_bank_account_path(@sales_bank_account), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Editar
+  <% end %>
+  <h1>Mostrar sales_bank_account</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Conta:</dt>
+  <dd><%= @sales_bank_account.conta %></dd>
+
+  <dt>Agencia:</dt>
+  <dd><%= @sales_bank_account.agencia %></dd>
+
+  <dt>Banco:</dt>
+  <dd><%= @sales_bank_account.banco %></dd>
+
+  <dt>Sales seller:</dt>
+  <dd><%= @sales_bank_account.sales_seller %></dd>
+
+</dl>

@@ -1,1 +1,0 @@
-json.partial! "admin_administrator_addresses/admin_administrator_address", admin_administrator_address: @admin_administrator_address

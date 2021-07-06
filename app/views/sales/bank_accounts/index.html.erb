@@ -1,0 +1,35 @@
+<div class="page-header">
+  <%= link_to new_sales_bank_account_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Novo Bank account
+  <% end %>
+  <h1>Listando sales_bank_accounts</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Conta</th>
+            <th>Agencia</th>
+            <th>Banco</th>
+            <th>Sales seller</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @sales_bank_accounts) do |sales_bank_account| %>
+            <td><%= sales_bank_account.conta %></td>
+            <td><%= sales_bank_account.agencia %></td>
+            <td><%= sales_bank_account.banco %></td>
+            <td><%= sales_bank_account.sales_seller %></td>
+            <td><%= link_to 'Mostrar', sales_bank_account %></td>
+        <td><%= link_to 'Editar', edit_sales_bank_account_path(sales_bank_account) %></td>
+        <td><%= link_to 'Remover', sales_bank_account, method: :delete, data: { confirm: 'Você tem certeza?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,2 @@
+module Sales::BankAccountsHelper
+end

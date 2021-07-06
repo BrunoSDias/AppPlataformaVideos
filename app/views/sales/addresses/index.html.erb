@@ -1,0 +1,39 @@
+<div class="page-header">
+  <%= link_to new_sales_address_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Novo Address
+  <% end %>
+  <h1>Listando sales_addresses</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Rua</th>
+            <th>Numero</th>
+            <th>Estado</th>
+            <th>Cep</th>
+            <th>Bairro</th>
+            <th>Sales seller</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @sales_addresses) do |sales_address| %>
+            <td><%= sales_address.rua %></td>
+            <td><%= sales_address.numero %></td>
+            <td><%= sales_address.estado %></td>
+            <td><%= sales_address.cep %></td>
+            <td><%= sales_address.bairro %></td>
+            <td><%= sales_address.sales_seller %></td>
+            <td><%= link_to 'Mostrar', sales_address %></td>
+        <td><%= link_to 'Editar', edit_sales_address_path(sales_address) %></td>
+        <td><%= link_to 'Remover', sales_address, method: :delete, data: { confirm: 'Você tem certeza?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

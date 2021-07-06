@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  conta: 1
+  agencia: 1
+  banco: 1
+  sales_seller: one
+
+two:
+  conta: 1
+  agencia: 1
+  banco: 1
+  sales_seller: two
