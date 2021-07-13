@@ -1,0 +1,13 @@
+<div class='container'>
+  <div class='row'>
+    <% @courses.each do |course| %>
+      <div class='col-md-4'>
+        <%= link_to course.link do %>
+          <h3> <%= course.nome %> </h3>
+          <%= image_tag "https://img2.gratispng.com/20180516/qqq/kisspng-ruby-red-gemstone-diamond-5afc6d26f11d28.8563107715264924549876.jpg", size: 150 %>
+          <p> <%= course.descricao %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

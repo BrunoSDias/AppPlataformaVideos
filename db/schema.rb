@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_06_005749) do
+ActiveRecord::Schema.define(version: 2021_07_13_012345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,26 @@ ActiveRecord::Schema.define(version: 2021_07_06_005749) do
     t.string "nome"
     t.string "telefone"
     t.string "cpf"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "password_digest"
+  end
+
+  create_table "admin_categories", force: :cascade do |t|
+    t.string "nome"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "admin_administrator_id"
+    t.index ["admin_administrator_id"], name: "index_admin_categories_on_admin_administrator_id"
+  end
+
+  create_table "client_users", force: :cascade do |t|
+    t.string "nome"
+    t.string "telefone"
+    t.string "cpf"
+    t.string "email"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -52,6 +72,8 @@ ActiveRecord::Schema.define(version: 2021_07_06_005749) do
     t.bigint "sales_seller_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "admin_category_id"
+    t.index ["admin_category_id"], name: "index_sales_courses_on_admin_category_id"
     t.index ["sales_seller_id"], name: "index_sales_courses_on_sales_seller_id"
   end
 
@@ -75,7 +97,9 @@ ActiveRecord::Schema.define(version: 2021_07_06_005749) do
     t.index ["sales_course_id"], name: "index_sales_videos_on_sales_course_id"
   end
 
+  add_foreign_key "admin_categories", "admin_administrators"
   add_foreign_key "sales_addresses", "sales_sellers"
   add_foreign_key "sales_bank_accounts", "sales_sellers"
+  add_foreign_key "sales_courses", "admin_categories"
   add_foreign_key "sales_videos", "sales_courses"
 end

@@ -13,7 +13,7 @@
         <th>Nome</th>
         <th>Descricao</th>
         <th>Link</th>
-        <th>Sales seller</th>
+        <th>Categoria</th>
         <th></th>
         <th></th>
         <th></th>
@@ -25,7 +25,7 @@
         <td><%= sales_course.nome %></td>
         <td><%= sales_course.descricao %></td>
         <td><%= sales_course.link %></td>
-        <td><%= sales_course.sales_seller %></td>
+        <td><%= sales_course.admin_category.nome %></td>
         <td><%= link_to 'Mostrar', sales_seller_course_path(@seller, sales_course) %></td>
         <td><%= link_to 'Editar', edit_sales_seller_course_path(@seller, sales_course) %></td>
         <td><%= link_to 'Remover', sales_seller_course_path(@seller, sales_course), method: :delete, data: { confirm: 'Você tem certeza?' } %></td>

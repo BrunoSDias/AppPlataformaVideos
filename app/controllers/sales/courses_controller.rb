@@ -64,6 +64,7 @@ class Sales::CoursesController < Sales::ApplicationController
 
     # Only allow a list of trusted parameters through.
     def sales_course_params
-      params.require(:sales_course).permit(:nome, :descricao, :link, :sales_seller)
+      params[:sales_course][:sales_seller_id] = @seller
+      params.require(:sales_course).permit(:nome, :descricao, :link, :sales_seller_id, :admin_category_id)
     end
 end

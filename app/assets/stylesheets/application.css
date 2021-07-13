@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+
+ .logo {
+   padding: 5px;
+ }
+
+ .marketplace-navbar {
+  background-color: #f0f8ff;
+  border-color: #c5ddf3;
+ }

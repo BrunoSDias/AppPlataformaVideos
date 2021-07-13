@@ -1,0 +1,2 @@
+module Marketplace::HomeHelper
+end
