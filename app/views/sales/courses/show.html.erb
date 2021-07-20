@@ -14,11 +14,18 @@
   <dt>Nome:</dt>
   <dd><%= @sales_course.nome %></dd>
 
+  <dt>Preço:</dt>
+  <dd><%= @sales_course.preco %></dd>
+
+  <dt>Foto Capa:</dt>
+  <dd>
+    <% if @sales_course.picture.attached? %>
+      <%= image_tag @sales_course.picture, size: '120x120' %>
+    <% end %>
+  </dd>
+
   <dt>Descricao:</dt>
   <dd><%= @sales_course.descricao %></dd>
-
-  <dt>Link:</dt>
-  <dd><%= @sales_course.link %></dd>
 </dl>
 
 <%= link_to "Vídeos", sales_seller_course_videos_path(@seller, @sales_course), class: 'btn btn-default' %>

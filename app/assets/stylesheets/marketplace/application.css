@@ -1,0 +1,59 @@
+.coursesContainer {
+  max-width: 900px;
+  margin: auto;
+  display: block;
+}
+
+.courseItem {
+  text-align: center;
+  padding: 13px;
+  box-shadow:1px 2px 5px 1px rgb(0 219 233 / 14%)
+}
+
+.courseItem:hover {
+  box-shadow:1px 2px 4px 1px rgb(0 219 233 / 38%)
+}
+
+.buyButton {
+  color: #fff;
+  background-color: #00ace9;
+  border-color: #00ace9;
+}
+
+.buyButton:hover {
+  color: #fff;
+  background-color:#00dbe9 !important;
+}
+
+a:hover {
+  background: transparent !important;
+}
+
+.py-5 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem !important;
+}
+
+.fw-bolder {
+  font-weight: bolder !important;
+}
+
+.fs-5 {
+  font-size: 1.25rem !important;
+}
+
+.mb-5 {
+  margin-bottom: 3rem !important;
+}

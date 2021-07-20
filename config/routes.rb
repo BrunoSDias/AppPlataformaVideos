@@ -1,14 +1,4 @@
 Rails.application.routes.draw do
-  namespace :client do
-    get 'home/index'
-  end
-  namespace :client do
-    root to: 'home#index'
-    resources :users do
-      get '/logout', to: 'home#logout'
-    end
-  end
-
   get '/', to: 'home#index'
   root to: 'home#index'
   
@@ -16,9 +6,19 @@ Rails.application.routes.draw do
   get '/signup', to: 'login#signup'
   post '/signup/create', to: 'login#create'
   post '/sigin', to: 'login#sigin'
-  
+
   namespace :marketplace do
     get '/', to: "home#index"
+    get 'checkout/index'
+    get 'courses/:id', to: 'courses#show'
+  end
+
+  namespace :client do
+    root to: 'home#index'
+    get 'home/index'
+    resources :users do
+      get '/logout', to: 'home#logout'
+    end
   end
 
   namespace :sales do

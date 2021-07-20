@@ -1,0 +1,41 @@
+<div class='goBackButton'>
+  <%= link_to "Voltar", '/marketplace/' %>
+  <hr>
+</div>
+<section class="py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="row gx-4 gx-lg-5 align-items-center">
+      <div class="col-md-6" style='text-align:center;'>
+        <img class="card-img-top mb-5 mb-md-0" src="<%= polymorphic_url(@course.picture) %>" alt="...">
+      </div>
+      <div class="col-md-6">
+        <h1 class="display-5 fw-bolder"><%= @course.nome %></h1>
+        <div class="fs-5 mb-5">
+          <span><%= number_to_currency(@course.preco) %></span>
+        </div>
+        <p class="lead"><%= @course.descricao %></p>
+        <div class="d-flex">
+          <button class="btn btn-outline-dark flex-shrink-0" type="button">
+            <i class="bi-cart-fill me-1"></i>
+            Comprar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .goBackButton {
+    text-align: center;
+  }
+
+  .goBackButton a {
+    color: #0096ceb3;
+    font-size: 1.3em;
+  }
+
+  .goBackButton a:hover {
+    background-color: transparent;
+  }
+</style>

@@ -1,13 +1,19 @@
 <div class='container'>
   <div class='row'>
-    <% @courses.each do |course| %>
-      <div class='col-md-4'>
-        <%= link_to course.link do %>
-          <h3> <%= course.nome %> </h3>
-          <%= image_tag "https://img2.gratispng.com/20180516/qqq/kisspng-ruby-red-gemstone-diamond-5afc6d26f11d28.8563107715264924549876.jpg", size: 150 %>
-          <p> <%= course.descricao %>
-        <% end %>
-      </div>
-    <% end %>
+    <div class='coursesContainer'>
+      <% @courses.each do |course| %>
+        <div class='col-md-4 '>
+          <div class='courseItem'>
+            <%= link_to "/marketplace/courses/#{course.id}" do %>
+              <%= image_tag course.picture, size: "120x120"%>
+              <h3> <%= course.nome %> </h3>
+              <p> Veja os detalhes.. </p>
+              <hr>
+            <% end %>
+            <%= link_to "Comprar", "/checkout?course_id=#{course.id}", class: 'btn buyButton' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
