@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :sales do
+    get 'youtube/redirect'
+  end
   get '/', to: 'home#index'
   root to: 'home#index'
   
@@ -9,7 +12,7 @@ Rails.application.routes.draw do
 
   namespace :marketplace do
     get '/', to: "home#index"
-    get 'checkout/index'
+    get '/checkout/:course_id', to: 'checkout#index'
     get 'courses/:id', to: 'courses#show'
   end
 
@@ -28,6 +31,8 @@ Rails.application.routes.draw do
     post '/signup/create', to: 'login#create'
     post '/sigin', to: 'login#sigin'
     get 'home/index'
+    get '/youtube-response', to: 'youtube#redirect'
+    post '/upload_video', to: 'youtube#upload'
     resources :sellers, except: [:index, :new] do
       resources :addresses
       resources :bank_accounts

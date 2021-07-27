@@ -13,6 +13,7 @@ class Sales::VideosController < Sales::ApplicationController
 
   # GET /sales/videos/new
   def new
+    @access_token = params[:access_token]
     @sales_video = Sales::Video.new
   end
 

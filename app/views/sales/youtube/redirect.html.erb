@@ -1,0 +1,8 @@
+<div class="page-header">
+  <p>Você será redirecionado em instantes...</p>
+</div>
+
+<script>
+  var params = window.location.hash.substring(1);
+  window.location.href=localStorage.getItem("@AppPlataformaCursos/redirect_route") + "?" + params;
+</script>

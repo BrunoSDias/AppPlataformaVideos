@@ -13,28 +13,102 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="form-group">
-    <%= f.label :nome, class: "col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_field :nome, class: "form-control" %>
+  <% if @access_token %>
+    <div class="form-group">
+      <%= f.label :nome, class: "col-sm-2 control-label" %>
+      <div class="col-sm-10">
+        <%= f.text_field :nome, class: "form-control" %>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :descricao, class: "col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_area :descricao, class: "form-control" %>
+    <div class="form-group">
+      <%= f.label :descricao, class: "col-sm-2 control-label" %>
+      <div class="col-sm-10">
+        <%= f.text_area :descricao, class: "form-control" %>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :link, class: "col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_field :link, class: "form-control" %>
+    <div class="form-group">
+      <%= f.label :video, class: "col-sm-2 control-label" %>
+      <div class="col-sm-10">
+        <%= file_field_tag :video, class: "form-control" %>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= f.submit class: "btn btn-primary" %>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="button" class='btn btn-success' onclick="handleVideo()">
+          Enviar Video
+        </button>
+      </div>
     </div>
-  </div>
+    <div class="form-group hide">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% else %>
+    <button type="button" class='btn btn-default form-control' style='height: 60px; font-size: 1.8em;' onclick="youtubeOauth()">
+      <img src="https://images.vexels.com/media/users/3/137425/isolated/lists/f2ea1ded4d037633f687ee389a571086-logotipo-do-icone-do-youtube.png" height="50" />
+        Youtube Oauth
+    </button>
+  <% end %>
 <% end %>
+
+<script>
+  var access_token = "<%= @access_token.html_safe %>"
+  var video = null;
+  $(document).ready(function() {
+    document.getElementById("video").onchange = function(e) {
+      try {
+        if (e.target.files[0]) {
+          video = e.target.files[0];
+        }
+      } catch(err) {
+        console.log(err)
+      }
+    }
+  })
+
+  function youtubeOauth() {
+    var client_id = "826049932659-jelot8fvrvbl517r22k7lljfk37rbfq9.apps.googleusercontent.com"
+    var redirect_uri = "http://localhost:3000/sales/youtube-response"
+    var scope = ["https://www.googleapis.com/auth/youtube", "https://www.googleapis.com/auth/youtube.upload"]
+
+    localStorage.setItem("@AppPlataformaCursos/redirect_route", window.location.href);
+    window.location.href = "https://accounts.google.com/o/oauth2/auth?client_id=" + client_id +
+    "&redirect_uri=" + redirect_uri +
+    "&scope=" + scope.join("%20") +
+    "&response_type=token";
+  }
+
+  function handleVideo() {
+    var title = document.getElementById("sales_video_nome").value;
+    if (!title) {
+      alert("Deve existir um titulo para o video")
+      return;
+    }
+    var data = new FormData;
+    data.append("token", access_token)
+    data.append("video", video)
+    data.append("title", title)
+
+    debugger;
+    $.ajax({
+      url: '/sales/upload_video',
+      type: 'POST',
+      data: data,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+        console.log(response)
+      },
+      error: function(response)  {
+        console.log(response);
+      }
+    })
+  }
+</script>
+
+<style>
+  .hide {
+    display: none;
+  }
+</style>
