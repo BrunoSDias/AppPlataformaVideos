@@ -7,7 +7,7 @@ class Sales::YoutubeController < Sales::ApplicationController
   def upload
     path = params[:video].path
     response = VideoService.upload(path: path, title: params[:title], token: params[:token])
-    render json: {}, status: :ok
+    render json: {embed: response.embed_html }, status: :ok
   rescue => err
     puts err
   end

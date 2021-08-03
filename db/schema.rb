@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_20_002006) do
+ActiveRecord::Schema.define(version: 2021_08_03_003413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,15 @@ ActiveRecord::Schema.define(version: 2021_07_20_002006) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "client_users_courses", force: :cascade do |t|
+    t.bigint "client_user_id"
+    t.bigint "sales_course_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_user_id"], name: "index_client_users_courses_on_client_user_id"
+    t.index ["sales_course_id"], name: "index_client_users_courses_on_sales_course_id"
+  end
+
   create_table "sales_addresses", force: :cascade do |t|
     t.string "rua"
     t.integer "numero"
@@ -115,11 +124,14 @@ ActiveRecord::Schema.define(version: 2021_07_20_002006) do
     t.bigint "sales_course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "embed"
     t.index ["sales_course_id"], name: "index_sales_videos_on_sales_course_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_categories", "admin_administrators"
+  add_foreign_key "client_users_courses", "client_users"
+  add_foreign_key "client_users_courses", "sales_courses"
   add_foreign_key "sales_addresses", "sales_sellers"
   add_foreign_key "sales_bank_accounts", "sales_sellers"
   add_foreign_key "sales_courses", "admin_categories"

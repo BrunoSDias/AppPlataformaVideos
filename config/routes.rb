@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :client do
+    get 'courses/show'
+  end
   namespace :sales do
     get 'youtube/redirect'
   end
@@ -19,6 +22,7 @@ Rails.application.routes.draw do
   namespace :client do
     root to: 'home#index'
     get 'home/index'
+    get '/courses/:course_id', to: 'courses#show'
     resources :users do
       get '/logout', to: 'home#logout'
     end

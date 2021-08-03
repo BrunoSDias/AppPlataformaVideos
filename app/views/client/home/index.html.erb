@@ -1,4 +1,54 @@
-<div class="page-header">
-  <h1>Client::Home#index</h1>
+<div class="container adquiredCoursesList">
+  <div class='row'>
+    <% @courses.each do |course|  %>
+      <div class="col-sm-4">
+        <a href="/client/courses/<%= course.id %>" class='adquiredCourse'>
+          <%= image_tag(course.picture, class: 'adquiredCourseImage') %>
+          <h3> <%= course.nome %> </h3>
+        </a>
+      </div>
+    <% end %>
+  </div>
 </div>
-<p>Find me in app/views/client/home/index.html.erb</p>
+
+<script>
+  function goToCourse() {
+    window.location.href("")
+  }
+</script>
+
+<style>
+  .adquiredCoursesList {
+    margin: auto;
+  }
+
+  .adquiredCourse {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 260px;
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 0 0 0;
+    border: 1px solid #000;
+    text-align: center;
+  }
+
+  .adquiredCourse:hover {
+    transform: scale(1.1);
+  }
+
+  .adquiredCourse h3 {
+    margin-bottom: 0;
+    margin-top: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+  }
+
+  .adquiredCourseImage {
+    height: 180px;
+  }
+</style>
