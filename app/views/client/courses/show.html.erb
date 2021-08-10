@@ -1,6 +1,41 @@
-<div class="page-header">
-  <h1>Client::Courses#show</h1>
-</div>
-<p>Find me in app/views/client/courses/show.html.erb</p>
+<% 
+  @selected ||= @videos.first
+%>
 
-<%= @course.inspect %>
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  <ul class='videoTitleList'>
+    <% @videos.each do |video| %>
+      <li onclick="getVideo(<%= video.id %>)"><%= video.nome %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class='openBtnContainer'>
+  <button class="openbtn" onclick="openNav()">☰</button>
+</div>
+
+<div class='videosContainer'>
+  <h3><%= @selected.nome %></h3>
+  <%= @selected.embed.html_safe %>
+</div>
+
+<script>
+  function openNav() {
+    document.getElementById("mySidebar").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  }
+
+  function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+  }
+
+  function getVideo(id) {
+    $.get("/client/courses/<%= @course.id %>/videos/" + id+ ".json", function(data, status){
+      $(".videosContainer").html(data.embed);
+    });
+  }
+
+
+</script>

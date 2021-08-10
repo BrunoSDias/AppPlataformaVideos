@@ -2,6 +2,7 @@ class Client::CoursesController < Client::ApplicationController
   before_action :set_client_course, only: [:show]
 
   def show
+    @videos = Sales::Video.where(sales_course_id: @course.id)
   end
 
   private
