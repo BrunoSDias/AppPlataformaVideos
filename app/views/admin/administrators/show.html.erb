@@ -7,7 +7,7 @@
     <span class="glyphicon glyphicon-pencil"></span>
     Editar
   <% end %>
-  <h1>Mostrar Administrador</h1>
+  <h1>Detalhes Administrador</h1>
 </div>
 
 <dl class="dl-horizontal">
@@ -21,13 +21,3 @@
   <dd><%= @admin_administrator.cpf %></dd>
 
 </dl>
-  
-<%= link_to admin_administrator_administrator_addresses_path(@admin_administrator), class: 'btn btn-primary' do %>
-  <span class="glyphicon glyphicon-pencil"></span>
-  Endereços
-<% end %>
-  
-<%= link_to admin_administrator_bank_accounts_path(@admin_administrator), class: 'btn btn-primary' do %>
-  <span class="glyphicon glyphicon-pencil"></span>
-  Conta Bancária
-<% end %>

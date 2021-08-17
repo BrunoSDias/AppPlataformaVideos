@@ -53,7 +53,7 @@ class Sales::CoursesController < Sales::ApplicationController
   def destroy
     @sales_course.destroy
     respond_to do |format|
-      format.html { redirect_to  sales_seller_courses_path(@seller), notice: "Curso foi removido com sucesso." }
+      format.html { redirect_to sales_seller_courses_path(@seller), notice: "Curso foi removido com sucesso." }
       format.json { head :no_content }
     end
   end

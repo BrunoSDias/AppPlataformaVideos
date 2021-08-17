@@ -1,6 +1,7 @@
 class Client::User < ApplicationRecord
   has_secure_password
-  has_many :client_user_courses, class_name: "Client::UsersCourse"
+  has_many :client_user_courses, class_name: "Client::UsersCourse", foreign_key: :client_user_id
+  has_many :sales_courses, through: :client_user_courses
 
   def self.login(email:, password:)
     user = find_by(email: email)
@@ -11,6 +12,6 @@ class Client::User < ApplicationRecord
   end
 
   def courses
-    Sales::Course.where(id: Client::UsersCourse.where(client_user_id: id).pluck(:sales_course_id))
+    sales_courses.joins(:sales_videos).distinct
   end
 end

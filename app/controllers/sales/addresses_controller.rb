@@ -25,7 +25,7 @@ class Sales::AddressesController < Sales::ApplicationController
 
     respond_to do |format|
       if @sales_address.save
-        format.html { redirect_to @sales_address, notice: "Address was successfully created." }
+        format.html { redirect_to @sales_address, notice: "Endereço adicionado com sucesso!" }
         format.json { render :show, status: :created, location: @sales_address }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class Sales::AddressesController < Sales::ApplicationController
   def update
     respond_to do |format|
       if @sales_address.update(sales_address_params)
-        format.html { redirect_to @sales_address, notice: "Address was successfully updated." }
+        format.html { redirect_to @sales_address, notice: "Endereço atualizado com sucesso!" }
         format.json { render :show, status: :ok, location: @sales_address }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class Sales::AddressesController < Sales::ApplicationController
   def destroy
     @sales_address.destroy
     respond_to do |format|
-      format.html { redirect_to sales_addresses_url, notice: "Address was successfully destroyed." }
+      format.html { redirect_to sales_addresses_url, notice: "Endereço removido com sucesso!" }
       format.json { head :no_content }
     end
   end

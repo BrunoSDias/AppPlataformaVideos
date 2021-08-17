@@ -3,11 +3,13 @@ Rails.application.routes.draw do
     get 'videos/show'
   end
   namespace :client do
-    get 'courses/show'
+    get 'courses/show
+
+    # GET /client/users/1 or /client/users/1.json
+    def show
+    end'
   end
-  namespace :sales do
-    get 'youtube/redirect'
-  end
+  
   get '/', to: 'home#index'
   root to: 'home#index'
   
@@ -27,13 +29,15 @@ Rails.application.routes.draw do
     get 'home/index'
     get '/courses/:course_id', to: 'courses#show'
     get '/courses/:course_id/videos/:id', to: 'videos#show'
-    resources :users do
+    resources :users, except: [ :show, :destroy ] do
       get '/logout', to: 'home#logout'
     end
   end
 
   namespace :sales do
     root to: 'home#index'
+    get 'youtube/redirect'
+    get '/logout', to: 'login#logout'
     get '/login', to: 'login#index'
     get '/signup', to: 'login#signup'
     post '/signup/create', to: 'login#create'
@@ -53,6 +57,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: 'home#index'
     get 'home/index'
+    get '/logout', to: 'login#logout'
     get '/login', to: 'login#index'
     get '/signup', to: 'login#signup'
     post '/signup/create', to: 'login#create'

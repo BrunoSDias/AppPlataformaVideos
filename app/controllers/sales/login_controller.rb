@@ -1,6 +1,6 @@
 class Sales::LoginController < Sales::ApplicationController
   layout "login"
-  before_action :user_logged?
+  before_action :user_logged?, except: [:logout]
   skip_before_action :authorize
 
   def index
@@ -29,6 +29,11 @@ class Sales::LoginController < Sales::ApplicationController
     end
     flash[:error] = "Houve um erro ao tentar realizar o cadastro, por favor tente novamente"
     render :signup
+  end
+
+  def logout
+    cookies[:seller] = nil
+    redirect_to "/sales/login"
   end
 
   private

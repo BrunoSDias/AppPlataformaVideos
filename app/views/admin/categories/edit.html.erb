@@ -3,11 +3,11 @@
     <span class="glyphicon glyphicon-list-alt"></span>
     Voltar
   <% end %>
-  <%= link_to @admin_administrator_category_path(@administrator, @admin_category), class: 'btn btn-primary' do %>
+  <%= link_to admin_administrator_category_path(@administrator, @admin_category), class: 'btn btn-primary', style: 'color: #fff;' do %>
     <span class="glyphicon glyphicon-info-sign"></span>
     Mostrar
   <% end %>
-  <h1>Editar admin_category</h1>
+  <h1>Alterar Categoria</h1>
 </div>
 
 <%= render 'form' %>

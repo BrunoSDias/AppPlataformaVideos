@@ -25,7 +25,7 @@ class Sales::SellersController < Sales::ApplicationController
 
     respond_to do |format|
       if @sales_seller.save
-        format.html { redirect_to @sales_seller, notice: "Seller was successfully created." }
+        format.html { redirect_to @sales_seller, notice: "Vendedor adicionado com sucesso!" }
         format.json { render :show, status: :created, location: @sales_seller }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,21 +38,12 @@ class Sales::SellersController < Sales::ApplicationController
   def update
     respond_to do |format|
       if @sales_seller.update(sales_seller_params)
-        format.html { redirect_to @sales_seller, notice: "Seller was successfully updated." }
+        format.html { redirect_to @sales_seller, notice: "Dados atualizados com sucesso!" }
         format.json { render :show, status: :ok, location: @sales_seller }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @sales_seller.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /sales/sellers/1 or /sales/sellers/1.json
-  def destroy
-    @sales_seller.destroy
-    respond_to do |format|
-      format.html { redirect_to sales_sellers_url, notice: "Seller was successfully destroyed." }
-      format.json { head :no_content }
     end
   end
 

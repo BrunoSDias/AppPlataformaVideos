@@ -37,8 +37,13 @@
           <li><a href="/marketplace">Comprar</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/signup">Cadastrar-se</a></li>
-          <li><a href="/login">Entrar</a></li>
+          <% if cookies[:user].blank? %>
+            <li><a href="/signup">Cadastrar-se</a></li>
+            <li><a href="/login">Entrar</a></li>
+          <% else %>
+            <li><a href="/client/users/<%= cookies[:user] %>/edit">Editar Perfil</a></li>
+            <li><a href="/client/users/<%= cookies[:user] %>/logout">Sair</a></li>
+          <% end %>
         </ul>
       </div>
     </div>

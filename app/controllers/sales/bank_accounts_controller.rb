@@ -25,7 +25,7 @@ class Sales::BankAccountsController < Sales::ApplicationController
 
     respond_to do |format|
       if @sales_bank_account.save
-        format.html { redirect_to @sales_bank_account, notice: "Bank account was successfully created." }
+        format.html { redirect_to @sales_bank_account, notice: "Conta Bancária adicionada com sucesso!" }
         format.json { render :show, status: :created, location: @sales_bank_account }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class Sales::BankAccountsController < Sales::ApplicationController
   def destroy
     @sales_bank_account.destroy
     respond_to do |format|
-      format.html { redirect_to sales_bank_accounts_url, notice: "Bank account was successfully destroyed." }
+      format.html { redirect_to sales_bank_accounts_url, notice: "Dados da conta atualizados com sucesso!" }
       format.json { head :no_content }
     end
   end

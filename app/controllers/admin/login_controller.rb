@@ -1,6 +1,6 @@
 class Admin::LoginController < Admin::ApplicationController
   layout "login"
-  before_action :user_logged?
+  before_action :user_logged?, except: [:logout]
   skip_before_action :authorize
 
   def index
@@ -29,6 +29,11 @@ class Admin::LoginController < Admin::ApplicationController
     end
     flash[:error] = "Houve um erro ao tentar realizar o cadastro, por favor tente novamente"
     render :signup
+  end
+
+  def logout
+    cookies[:administrator] = nil
+    redirect_to '/admin/login'
   end
 
   private
