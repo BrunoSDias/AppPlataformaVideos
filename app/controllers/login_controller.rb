@@ -22,12 +22,11 @@ class LoginController < ApplicationController
 
   def create
     @user = Client::User.new(user_params)
-    if @user.save!
+    if @user.save
       cookies[:user] = { value: @user.id, httponly: true }
       redirect_to root_path
       return
     end
-    flash[:error] = "Houve um erro ao tentar realizar o cadastro, por favor tente novamente"
     render :signup
   end
 

@@ -71,6 +71,6 @@ class Sales::VideosController < Sales::ApplicationController
     # Only allow a list of trusted parameters through.
     def sales_video_params
       params[:sales_video][:sales_course_id] = params[:course_id]
-      params.require(:sales_video).permit(:nome, :descricao, :link, :sales_course_id, :embed)
+      params.require(:sales_video).permit(:nome, :descricao, :link, :sales_course_id, :embed, :youtube_video_id)
     end
 end

@@ -1,13 +1,13 @@
 <div class="page-header">
-  <%= link_to sales_addresses_path, class: 'btn btn-default' do %>
+  <%= link_to sales_seller_addresses_path(@sales_seller), class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
     Voltar
   <% end %>
-  <%= link_to edit_sales_address_path(@sales_address), class: 'btn btn-primary' do %>
+  <%= link_to edit_sales_seller_address_path(@sales_seller, @sales_address), class: 'btn btn-primary' do %>
     <span class="glyphicon glyphicon-pencil"></span>
     Editar
   <% end %>
-  <h1>Mostrar sales_address</h1>
+  <h1>Detalhes Endereço</h1>
 </div>
 
 <dl class="dl-horizontal">
@@ -25,8 +25,5 @@
 
   <dt>Bairro:</dt>
   <dd><%= @sales_address.bairro %></dd>
-
-  <dt>Sales seller:</dt>
-  <dd><%= @sales_address.sales_seller %></dd>
 
 </dl>

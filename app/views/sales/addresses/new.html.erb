@@ -1,9 +1,9 @@
 <div class="page-header">
-  <%= link_to sales_addresses_path, class: 'btn btn-default' do %>
+  <%= link_to sales_seller_addresses_path(@sales_seller), class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
     Voltar
   <% end %>
-  <h1>Novo sales_address</h1>
+  <h1>Novo Endereço</h1>
 </div>
 
 <%= render 'form' %>

@@ -6,7 +6,12 @@
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
   <ul class='videoTitleList'>
     <% @videos.each do |video| %>
-      <li onclick="getVideo(<%= video.id %>)"><%= video.nome %></li>
+      <li onclick="getVideo(<%= video.id %>)" id="lesson<%= video.id %>">
+        <%= video.nome %>
+        <% if video.concluded?(@user) %>
+          <span style="color: green; font-size: 1.3em; float:right;">✓</span>
+        <% end %>
+      </li>
     <% end %>
   </ul>
 </div>
@@ -16,11 +21,14 @@
 </div>
 
 <div class='videosContainer'>
-  <h3><%= @selected.nome %></h3>
-  <%= @selected.embed.html_safe %>
+  <h3 id="lessonTitle"><%= @selected.nome %></h3>
+  <div id="player"></div>
+  <p id="lessonDescription"></p>
 </div>
 
 <script>
+  var player;
+  var currentLesson = <%= @selected.id %>
   function openNav() {
     document.getElementById("mySidebar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
@@ -31,11 +39,38 @@
     document.getElementById("main").style.marginLeft= "0";
   }
 
-  function getVideo(id) {
-    $.get("/client/courses/<%= @course.id %>/videos/" + id+ ".json", function(data, status){
-      $(".videosContainer").html(data.embed);
+  function concludeLesson() {
+    $.post("/client/courses/<%= @course.id %>/videos/" + currentLesson+ ".json", function(data, status){
+      $("#lesson" + currentLesson).append("<span style=\"color: green; font-size: 1.3em; float:right;\">✓</span>")
+      alert("Parabéns por ter finalizado a aula");
+      getVideo(data.next_lesson.sales_video_id);
     });
   }
 
+  function getVideo(id) {
+    $.get("/client/courses/<%= @course.id %>/videos/" + id+ ".json", function(data, status){
+      $("#lessonTitle").text(data.nome);
+      $("#lessonDescription").text(data.descricao);
+      currentLesson = id;
+      player.loadVideoById(data.youtube_video_id);
+    });
+  }
 
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '360',
+      width: '640',
+      videoId: '<%= @selected.youtube_video_id %>',
+      events: {
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+  
+  function onPlayerStateChange(event) {
+    console.log("Estado atual do player: ", player.getPlayerState())
+    if (player.getPlayerState() == 0) {
+      concludeLesson()
+    }
+  }
 </script>

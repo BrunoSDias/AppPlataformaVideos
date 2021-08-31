@@ -1,15 +1,4 @@
 Rails.application.routes.draw do
-  namespace :client do
-    get 'videos/show'
-  end
-  namespace :client do
-    get 'courses/show
-
-    # GET /client/users/1 or /client/users/1.json
-    def show
-    end'
-  end
-  
   get '/', to: 'home#index'
   root to: 'home#index'
   
@@ -29,6 +18,9 @@ Rails.application.routes.draw do
     get 'home/index'
     get '/courses/:course_id', to: 'courses#show'
     get '/courses/:course_id/videos/:id', to: 'videos#show'
+    post '/courses/:course_id/videos/:id', to: 'videos#conclude_lesson'
+    get 'videos/show'
+    get 'courses/show'
     resources :users, except: [ :show, :destroy ] do
       get '/logout', to: 'home#logout'
     end

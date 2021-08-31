@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_03_003413) do
+ActiveRecord::Schema.define(version: 2021_08_31_002703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 2021_08_03_003413) do
     t.datetime "updated_at", null: false
     t.string "email"
     t.string "password_digest"
+    t.index ["cpf"], name: "index_admin_administrators_on_cpf", unique: true
+    t.index ["email"], name: "index_admin_administrators_on_email", unique: true
   end
 
   create_table "admin_categories", force: :cascade do |t|
@@ -52,6 +54,17 @@ ActiveRecord::Schema.define(version: 2021_08_03_003413) do
     t.datetime "updated_at", null: false
     t.bigint "admin_administrator_id"
     t.index ["admin_administrator_id"], name: "index_admin_categories_on_admin_administrator_id"
+    t.index ["nome"], name: "index_admin_categories_on_nome", unique: true
+  end
+
+  create_table "client_user_videos", force: :cascade do |t|
+    t.bigint "client_user_id"
+    t.bigint "sales_video_id"
+    t.boolean "concluido"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_user_id"], name: "index_client_user_videos_on_client_user_id"
+    t.index ["sales_video_id"], name: "index_client_user_videos_on_sales_video_id"
   end
 
   create_table "client_users", force: :cascade do |t|
@@ -62,6 +75,8 @@ ActiveRecord::Schema.define(version: 2021_08_03_003413) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["cpf"], name: "index_client_users_on_cpf", unique: true
+    t.index ["email"], name: "index_client_users_on_email", unique: true
   end
 
   create_table "client_users_courses", force: :cascade do |t|
@@ -82,6 +97,7 @@ ActiveRecord::Schema.define(version: 2021_08_03_003413) do
     t.bigint "sales_seller_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["numero", "cep"], name: "index_sales_addresses_on_numero_and_cep", unique: true
     t.index ["sales_seller_id"], name: "index_sales_addresses_on_sales_seller_id"
   end
 
@@ -125,11 +141,14 @@ ActiveRecord::Schema.define(version: 2021_08_03_003413) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "embed"
+    t.string "youtube_video_id"
     t.index ["sales_course_id"], name: "index_sales_videos_on_sales_course_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_categories", "admin_administrators"
+  add_foreign_key "client_user_videos", "client_users"
+  add_foreign_key "client_user_videos", "sales_videos"
   add_foreign_key "client_users_courses", "client_users"
   add_foreign_key "client_users_courses", "sales_courses"
   add_foreign_key "sales_addresses", "sales_sellers"

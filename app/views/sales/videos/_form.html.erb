@@ -97,7 +97,7 @@
       contentType: false,
       processData: false,
       success: function(response) {
-        $(".formContainer").append("<input type='hidden' name='sales_video[embed]' value='" + response.embed + "' >");
+        $(".formContainer").append("<input type='hidden' name='sales_video[youtube_video_id]' value='" + response.id + "' >");
         $(".hide").removeClass("hide");
         $(".sendVideo").addClass("hide");
       },

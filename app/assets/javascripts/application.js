@@ -12,7 +12,18 @@
 //
 //= require jquery
 //= require rails-ujs
+//= require jquery.mask
 //= require activestorage
 //= require turbolinks
 //= require bootstrap
 //= require_tree .
+
+$('.cpf').mask('000.000.000-00', {reverse: true});
+var options =  {
+  onKeyPress: function(tel, e, field, options) {
+    var masks = ['(00) 0000-00009', '(00) 00000-0000'];
+    var mask = (tel.length>14) ? masks[1] : masks[0];
+    $('.tel').mask(mask, options);
+}};
+
+$('.tel').mask('(00) 0000-00009', options);

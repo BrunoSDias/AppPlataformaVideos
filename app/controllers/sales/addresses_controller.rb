@@ -1,5 +1,6 @@
 class Sales::AddressesController < Sales::ApplicationController
   before_action :set_sales_address, only: %i[ show edit update destroy ]
+  before_action :set_sales_seller
 
   # GET /sales/addresses or /sales/addresses.json
   def index
@@ -25,7 +26,7 @@ class Sales::AddressesController < Sales::ApplicationController
 
     respond_to do |format|
       if @sales_address.save
-        format.html { redirect_to @sales_address, notice: "Endereço adicionado com sucesso!" }
+        format.html { redirect_to sales_seller_address_path(@sales_seller, @sales_address), notice: "Endereço adicionado com sucesso!" }
         format.json { render :show, status: :created, location: @sales_address }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +39,7 @@ class Sales::AddressesController < Sales::ApplicationController
   def update
     respond_to do |format|
       if @sales_address.update(sales_address_params)
-        format.html { redirect_to @sales_address, notice: "Endereço atualizado com sucesso!" }
+        format.html { redirect_to sales_seller_address_path(@sales_seller, @sales_address), notice: "Endereço atualizado com sucesso!" }
         format.json { render :show, status: :ok, location: @sales_address }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,12 +52,15 @@ class Sales::AddressesController < Sales::ApplicationController
   def destroy
     @sales_address.destroy
     respond_to do |format|
-      format.html { redirect_to sales_addresses_url, notice: "Endereço removido com sucesso!" }
+      format.html { redirect_to sales_seller_addresses_path(@sales_seller), notice: "Endereço removido com sucesso!" }
       format.json { head :no_content }
     end
   end
 
   private
+    def set_sales_seller
+      @sales_seller = Sales::Seller.find(params[:seller_id])
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_sales_address
       @sales_address = Sales::Address.find(params[:id])
@@ -64,6 +68,7 @@ class Sales::AddressesController < Sales::ApplicationController
 
     # Only allow a list of trusted parameters through.
     def sales_address_params
+      params[:sales_address][:sales_seller_id] = params[:seller_id]
       params.require(:sales_address).permit(:rua, :numero, :estado, :cep, :bairro, :sales_seller_id)
     end
 end
