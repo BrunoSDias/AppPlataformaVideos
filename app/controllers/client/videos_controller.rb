@@ -7,24 +7,13 @@ class Client::VideosController < Client::ApplicationController
   def conclude_lesson
     user_lesson = Client::UserVideo.find_by(client_user_id: @user, sales_video_id: params[:id])
     if user_lesson.update(concluido: true)
-      lessons = Sales::Course.find(params[:course_id]).sales_videos.pluck(:id)
-      next_lesson = begin
-        Client::UserVideo
-        .where(client_user_id: @user, sales_video_id: lessons, concluido: [false, nil])
-        .where("client_user_videos.id > #{user_lesson.id}")
-        .limit(1)
-        .reorder(id: :asc)
-        .first
-      rescue => err
-        puts "===================================================="
-        puts "===================================================="
-        puts err
-        puts "===================================================="
-        puts "===================================================="
-        nil
+      next_lesson, percentage = user_lesson.next_lesson(user_id: @user, course_id: params[:course_id])
+      if next_lesson
+        render json: {next_lesson: next_lesson, concluded: false, percentage: percentage}, status: :ok
+      else
+        Client::UsersCourse.find_by(sales_course_id: params[:course_id], client_user_id: @user).update(concluido: true)
+        render json: {next_lesson: next_lesson, concluded: true, percentage: percentage}, status: :ok
       end
-
-      render json: {next_lesson: next_lesson}, status: :ok
       return
     end
     render json: {}, status: :unauthorized

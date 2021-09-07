@@ -4,12 +4,21 @@
 
 <div id="mySidebar" class="sidebar">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+
+  <div id="progressBarContainer">
+    <div id="progressBar" style="width: <%=@percentage%>%">
+      <p id="progressBarValue" style="margin-left: <%=@percentage%>%;">
+        <%= @percentage %>%
+      </p>
+    </div>
+  </div>
+
   <ul class='videoTitleList'>
     <% @videos.each do |video| %>
       <li onclick="getVideo(<%= video.id %>)" id="lesson<%= video.id %>">
         <%= video.nome %>
-        <% if video.concluded?(@user) %>
-          <span style="color: green; font-size: 1.3em; float:right;">✓</span>
+        <% if video.concluido %>
+          <span style="color: green; font-size: 1.3em; float:right;" id="check<%=video.id%>">✓</span>
         <% end %>
       </li>
     <% end %>
@@ -29,6 +38,7 @@
 <script>
   var player;
   var currentLesson = <%= @selected.id %>
+
   function openNav() {
     document.getElementById("mySidebar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
@@ -41,7 +51,19 @@
 
   function concludeLesson() {
     $.post("/client/courses/<%= @course.id %>/videos/" + currentLesson+ ".json", function(data, status){
-      $("#lesson" + currentLesson).append("<span style=\"color: green; font-size: 1.3em; float:right;\">✓</span>")
+      $("#progressBar").css("width", data.percentage + "%");
+      $("#progressBarValue").css("margin-left", data.percentage + "%");
+      $("#progressBarValue").text(data.percentage + "%");
+
+      if (data.concluded) {
+        alert("Parabéns por ter finalizado o curso!");
+        window.location.href = '/'
+        return;
+      }
+      
+      if (!$("#check" + currentLesson).text()) {
+        $("#lesson" + currentLesson).append("<span style=\"color: green; font-size: 1.3em; float:right;\" id=\"check" + currentLesson + "\">✓</span>")
+      }
       alert("Parabéns por ter finalizado a aula");
       getVideo(data.next_lesson.sales_video_id);
     });

@@ -106,6 +106,23 @@
   height: 500px;
 }
 
+#progressBarContainer {
+  background-color: #f0f8ff;
+  width: 220px;
+  margin: 15px;
+  height: 20px;
+}
+
+#progressBar {
+  background-color: green;
+  height: 100%;
+  padding: 2px;
+}
+
+#progressBarValue {
+  color: #fff;
+}
+
 @media screen and (max-height: 450px) {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}

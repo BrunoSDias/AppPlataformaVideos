@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_31_002703) do
+ActiveRecord::Schema.define(version: 2021_09_07_010402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 2021_08_31_002703) do
     t.bigint "sales_course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "concluido", default: false
     t.index ["client_user_id"], name: "index_client_users_courses_on_client_user_id"
     t.index ["sales_course_id"], name: "index_client_users_courses_on_sales_course_id"
   end

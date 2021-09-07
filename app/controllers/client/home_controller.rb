@@ -4,6 +4,12 @@ class Client::HomeController < Client::ApplicationController
 
   def index
     @courses = @client_user.courses
+    .joins(:client_users_courses)
+    .where(client_users_courses: { client_user_id: @user })
+    .select("
+      sales_courses.*,
+      client_users_courses.concluido
+    ")
   end
 
   def logout
