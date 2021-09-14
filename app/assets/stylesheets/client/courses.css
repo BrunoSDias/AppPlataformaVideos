@@ -32,6 +32,9 @@
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
+  -webkit-box-shadow: 3px 0px 17px 2px rgb(0 150 206 / 76%);
+  box-shadow: 3px 0px 17px 2px rgb(0 150 206 / 76%);
+  border: 1px solid #03698f;
 }
 
 .sidebar a {

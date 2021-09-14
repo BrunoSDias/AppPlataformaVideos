@@ -7,7 +7,7 @@
 
   <div id="progressBarContainer">
     <div id="progressBar" style="width: <%=@percentage%>%">
-      <p id="progressBarValue" style="margin-left: <%=@percentage%>%;">
+      <p id="progressBarValue" style="margin-left: <%= @percentage > 80 ? 80 : @percentage %>%;">
         <%= @percentage %>%
       </p>
     </div>
@@ -17,9 +17,13 @@
     <% @videos.each do |video| %>
       <li onclick="getVideo(<%= video.id %>)" id="lesson<%= video.id %>">
         <%= video.nome %>
-        <% if video.concluido %>
-          <span style="color: green; font-size: 1.3em; float:right;" id="check<%=video.id%>">✓</span>
-        <% end %>
+        <input 
+          type="checkbox" 
+          value="" 
+          <% if video.concluido %> checked <% end %> 
+          style="float: right;" 
+          onclick="concludeLesson(<%= video.id %>)"
+        >
       </li>
     <% end %>
   </ul>
@@ -50,9 +54,13 @@
   }
 
   function concludeLesson() {
-    $.post("/client/courses/<%= @course.id %>/videos/" + currentLesson+ ".json", function(data, status){
+    setLessonAsConcluded(currentLesson);
+  }
+
+  function setLessonAsConcluded(lessonId) {
+    $.post("/client/courses/<%= @course.id %>/videos/" + lessonId+ ".json", function(data, status){
       $("#progressBar").css("width", data.percentage + "%");
-      $("#progressBarValue").css("margin-left", data.percentage + "%");
+      $("#progressBarValue").css("margin-left", data.percentage > 80 ? 80 : data.percentage + "%");
       $("#progressBarValue").text(data.percentage + "%");
 
       if (data.concluded) {
@@ -61,8 +69,8 @@
         return;
       }
       
-      if (!$("#check" + currentLesson).text()) {
-        $("#lesson" + currentLesson).append("<span style=\"color: green; font-size: 1.3em; float:right;\" id=\"check" + currentLesson + "\">✓</span>")
+      if (!$("#check" + lessonId).is(":checked")) {
+        $("#check" + lessonId).attr("checked", true);
       }
       alert("Parabéns por ter finalizado a aula");
       getVideo(data.next_lesson.sales_video_id);
@@ -93,6 +101,13 @@
     console.log("Estado atual do player: ", player.getPlayerState())
     if (player.getPlayerState() == 0) {
       concludeLesson()
+    }
+  }
+
+  function concludeLesson(lessonId) {
+    var r = confirm("Deseja realmente concluir essa aula?");
+    if (r == true) {
+      setLessonAsConcluded(lessonId);
     }
   }
 </script>

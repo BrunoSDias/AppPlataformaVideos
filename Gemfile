@@ -32,6 +32,7 @@ gem 'jquery_mask_rails', '~> 0.1.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'yt', '~> 0.32.0'
 gem 'jquery-rails'
+gem 'stripe'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

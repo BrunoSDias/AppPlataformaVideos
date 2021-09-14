@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   namespace :marketplace do
     get '/', to: "home#index"
     get '/checkout/:course_id', to: 'checkout#index'
+    post '/checkout/create_intent', to: 'checkout#create_intent'
     get 'courses/:id', to: 'courses#show'
   end
 

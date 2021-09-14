@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-8 order-md-1">
           <h4 class="mb-3">Endereço de cobrança</h4>
-          <form class="needs-validation" novalidate="">
+          <form class="needs-validation" novalidate="" id="payment-form">
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="firstName">Nome</label>
@@ -84,39 +84,13 @@
                 <label class="custom-control-label" for="boleto">Boleto</label>
               </div>
             </div>
-            <%# <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="cc-name">Name on card</label>
-                <input type="text" class="form-control" id="cc-name" placeholder="" required="">
-                <small class="text-muted">Full name as displayed on card</small>
-                <div class="invalid-feedback">
-                  Name on card is required
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="cc-number">Credit card number</label>
-                <input type="text" class="form-control" id="cc-number" placeholder="" required="">
-                <div class="invalid-feedback">
-                  Credit card number is required
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-3 mb-3">
-                <label for="cc-expiration">Expiration</label>
-                <input type="text" class="form-control" id="cc-expiration" placeholder="" required="">
-                <div class="invalid-feedback">
-                  Expiration date required
-                </div>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="cc-expiration">CVV</label>
-                <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
-                <div class="invalid-feedback">
-                  Security code required
-                </div>
-              </div>
-            </div> %>
+
+            <div id="card-element"></div>
+            <p id="card-error" role="alert"></p>
+            <p class="result-message hidden">
+              Payment succeeded, see the result in your
+              <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
+            </p>
             <hr class="mb-4">
             <button class="btn btn-primary btn-lg btn-block" type="submit">Finalizar Pagamento</button>
           </form>
@@ -129,3 +103,87 @@
         margin: 8px 0;
       }
     </style>
+
+    <script>
+      var stripe = Stripe("pk_test_51J4y7yLAofjbQE1njbohnDUC9J4qDFm59lBElI8wfyb5t9r0wtMzqJbw898pdAxdxCIZdc28H6t2foXVwGvcGd5y00OKBHwETK");
+
+      fetch("/marketplace/checkout/create_intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({amount: <%= @course.preco %>, authenticity_token: "<%= form_authenticity_token.html_safe %>"})
+      })
+      .then(function(result) {
+        return result.json();
+      })
+      .then(function(data) {
+      var elements = stripe.elements();
+      var style = {
+        base: {
+          color: "#32325d",
+          fontFamily: 'Arial, sans-serif',
+          fontSmoothing: "antialiased",
+          fontSize: "16px",
+          "::placeholder": {
+            color: "#32325d"
+          }
+        },
+        invalid: {
+          fontFamily: 'Arial, sans-serif',
+          color: "#fa755a",
+          iconColor: "#fa755a"
+        }
+      };
+      var card = elements.create("card", { style: style });
+      
+      card.mount("#card-element");
+      card.on("change", function (event) {
+        document.querySelector("button").disabled = event.empty;
+        document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
+      });
+
+      var form = document.getElementById("payment-form");
+      form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        payWithCard(stripe, card, data.clientSecret);
+      });
+    });
+
+    var payWithCard = function(stripe, card, clientSecret) {
+      stripe
+        .confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: card
+          }
+        })
+        .then(function(result) {
+          if (result.error) {
+            // Show error to your customer
+            showError(result.error.message);
+          } else {
+            // The payment succeeded!
+            orderComplete(result.paymentIntent.id);
+          }
+        });
+    };
+
+    var orderComplete = function(paymentIntentId) {
+      document
+        .querySelector(".result-message a")
+        .setAttribute(
+          "href",
+          "https://dashboard.stripe.com/test/payments/" + paymentIntentId
+        );
+      document.querySelector(".result-message").classList.remove("hidden");
+      document.querySelector("button").disabled = true;
+    };
+
+    var showError = function(errorMsgText) {
+      var errorMsg = document.querySelector("#card-error");
+      errorMsg.textContent = errorMsgText;
+      setTimeout(function() {
+        errorMsg.textContent = "";
+      }, 4000);
+    };
+    </script>
