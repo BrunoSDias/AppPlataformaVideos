@@ -6,7 +6,8 @@ class Marketplace::CheckoutController < Marketplace::ApplicationController
   def create_intent
     payment_intent = Stripe::PaymentIntent.create(
       amount: (params[:amount] * 100).to_i,
-      currency: 'brl'
+      currency: 'brl',
+      payment_method_types: ['card', 'boleto']
     )
 
     render json: { clientSecret: payment_intent['client_secret'] }, status: :ok

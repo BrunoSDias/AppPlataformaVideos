@@ -16,82 +16,104 @@
           </ul>
         </div>
         <div class="col-md-8 order-md-1">
-          <h4 class="mb-3">Endereço de cobrança</h4>
+          <h4 class="mb-3">Forma de Pagamento</h4>
+
+          <div class="d-block my-3 paymentMethodSelect">
+            <div class="custom-control custom-radio">
+              <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked="" required="" onchange="togglePaymentMethod(this.id)">
+              <label class="custom-control-label" for="credit">Cartão de crédito</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input id="boleto" name="paymentMethod" type="radio" class="custom-control-input" required="" onchange="togglePaymentMethod(this.id)">
+              <label class="custom-control-label" for="boleto">Boleto</label>
+            </div>
+          </div>
           <form class="needs-validation" novalidate="" id="payment-form">
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="firstName">Nome</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
-                <div class="invalid-feedback">
-                  Nome é obrigatório
+
+            <div id="boletoContainer" style="display: none;">
+              <h4 class="mb-3">Endereço de cobrança</h4>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="firstName">Nome</label>
+                  <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                  <div class="invalid-feedback">
+                    Nome é obrigatório
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="lastName">Último nome</label>
+                  <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+                  <div class="invalid-feedback">
+                    Último nome é obrigatório
+                  </div>
                 </div>
               </div>
-              <div class="col-md-6 mb-3">
-                <label for="lastName">Último nome</label>
-                <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+
+              <div class="mb-3">
+                <label for="tax_id">CPF</label>
+                <input type="text" class="form-control cpf" id="tax_id" placeholder="you@example.com">
                 <div class="invalid-feedback">
-                  Último nome é obrigatório
+                  Por favor informe seu email
                 </div>
               </div>
-            </div>
 
-            <div class="mb-3">
-              <label for="email">Email <span class="text-muted">(Optional)</span></label>
-              <input type="email" class="form-control" id="email" placeholder="you@example.com">
-              <div class="invalid-feedback">
-                Por favor informe seu email
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="address">Endereço</label>
-              <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
-              <div class="invalid-feedback">
-                Por favor informe seu endereço de entrega
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label for="state">Estado</label>
-                <select class="custom-select d-block w-100" id="state" required="">
-                  <option value="">Choose...</option>
-                  <option>California</option>
-                </select>
+              <div class="mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="you@example.com">
                 <div class="invalid-feedback">
-                  Por favor informe seu estado
+                  Por favor informe seu email
                 </div>
               </div>
-              <div class="col-md-3 mb-3">
-                <label for="zip">Cep</label>
-                <input type="text" class="form-control" id="zip" placeholder="" required="">
+
+              <div class="mb-3">
+                <label for="address">Endereço</label>
+                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="Por favor informe seu endereço de entrega">
                 <div class="invalid-feedback">
-                  Por favor informe seu CEP
+                  Por favor informe seu endereço de entrega
                 </div>
               </div>
-            </div>
-            <hr class="mb-4">
 
-            <h4 class="mb-3">Forma de Pagamento</h4>
-
-            <div class="d-block my-3">
-              <div class="custom-control custom-radio">
-                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked="" required="">
-                <label class="custom-control-label" for="credit">Cartão de crédito</label>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="stateSelect">Estado</label>
+                  <select class="custom-select d-block w-100" id="stateSelect" required="Por favor informe seu estado" onchange="loadCities(this.value)">
+                    <option value="">Escolha...</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Por favor informe seu estado
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="citySelect">Cidade</label>
+                  <select class="custom-select d-block w-100" id="citySelect" required="Por favor informe sua cidade">
+                    <option value="">Escolha...</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Por favor informe sua cidade
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="postal_code">Cep</label>
+                  <input type="text" class="form-control cep" id="postal_code" placeholder="" required="">
+                  <div class="invalid-feedback">
+                    Por favor informe seu CEP
+                  </div>
+                </div>
               </div>
-              <div class="custom-control custom-radio">
-                <input id="boleto" name="paymentMethod" type="radio" class="custom-control-input" required="">
-                <label class="custom-control-label" for="boleto">Boleto</label>
-              </div>
+              <div id="error-message" role="alert"></div>
+              <hr class="mb-4">
             </div>
 
-            <div id="card-element"></div>
-            <p id="card-error" role="alert"></p>
-            <p class="result-message hidden">
-              Payment succeeded, see the result in your
-              <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
-            </p>
-            <hr class="mb-4">
+            <div id="cardContainer">
+              <div id="card-element"></div>
+              <p id="card-error" role="alert"></p>
+              <p class="result-message hidden">
+                Payment succeeded, see the result in your
+                <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
+              </p>
+              <hr class="mb-4">
+            </div>
+            
             <button class="btn btn-primary btn-lg btn-block" type="submit">Finalizar Pagamento</button>
           </form>
         </div>
@@ -102,10 +124,90 @@
       .needs-validation .mb-3{
         margin: 8px 0;
       }
+
+      .paymentMethodSelect {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .paymentMethodSelect .custom-radio {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .paymentMethodSelect .custom-radio label, .paymentMethodSelect .custom-radio input{
+        margin: 0 0 5px 5px;
+      }
+
+      #cardContainer, #boletoContainer {
+        margin-top: 15px;
+      }
+
     </style>
 
     <script>
       var stripe = Stripe("pk_test_51J4y7yLAofjbQE1njbohnDUC9J4qDFm59lBElI8wfyb5t9r0wtMzqJbw898pdAxdxCIZdc28H6t2foXVwGvcGd5y00OKBHwETK");
+
+      $(document).ready(function() {
+        fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        })
+        .then(function(res) {
+          return res.json();
+        })
+        .then(function(res) {
+          if (res && res.length) {
+            var elSelect = document.getElementById("stateSelect");
+            res.forEach(function(state) {
+              var option = document.createElement("option");
+              option.id = state.sigla;
+              option.value = state.id;
+              option.innerText = state.nome;
+              elSelect.appendChild(option);
+            })
+          }
+        })
+      })
+
+      var loadCities = function(stateId) {
+        fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados/" + stateId + "/municipios", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        })
+        .then(function(res) {
+          return res.json();
+        })
+        .then(function(res) {
+          if (res && res.length) {
+            var elSelect = document.getElementById("citySelect");
+            elSelect.innerHTML = "";
+            res.forEach(function(city) {
+              var option = document.createElement("option");
+              option.value = city.nome;
+              option.innerText = city.nome;
+              elSelect.appendChild(option);
+            })
+          }
+        })
+      }
+
+      function togglePaymentMethod(type) {
+        if (type == "boleto") {
+          document.getElementById("boletoContainer").style.display = "block";
+          document.getElementById("cardContainer").style.display = "none";
+        }
+        else if (type == "credit") {
+          document.getElementById("boletoContainer").style.display = "none";
+          document.getElementById("cardContainer").style.display = "block";
+        }
+      }
 
       fetch("/marketplace/checkout/create_intent", {
         method: "POST",
@@ -145,10 +247,47 @@
 
       var form = document.getElementById("payment-form");
       form.addEventListener("submit", function(event) {
+        var paymentType = document.querySelector("input[name='paymentMethod']:checked").id
         event.preventDefault();
-        payWithCard(stripe, card, data.clientSecret);
+        if (paymentType == 'card') {
+          payWithCard(stripe, card, data.clientSecret);
+        }
+        else if (paymentType == 'boleto') {
+          payWithBankSlip(stripe, data.clientSecret);
+        }
       });
     });
+
+    var payWithBankSlip = function(stripe, clientSecret) {
+      stateSelect = document.getElementById('stateSelect');
+      stripe.confirmBoletoPayment(clientSecret,
+        {
+          payment_method: {
+            boleto: {
+              tax_id: document.getElementById('tax_id').value,
+            },
+            billing_details: {
+              name: document.getElementById('firstName').value + " " + document.getElementById('lastName').value,
+              email: document.getElementById('email').value,
+              address: {
+                line1: document.getElementById('address').value,
+                city: document.getElementById('citySelect').value,
+                state: stateSelect.options[stateSelect.selectedIndex].id,
+                postal_code: document.getElementById('postal_code').value,
+                country: 'BR',
+              },
+            },
+          },
+        })
+        .then(function(result) {
+          if (result.error) {
+            var errorMsg = document.getElementById('error-message');
+            errorMsg.innerText = result.error.message;
+          }
+
+          createOrder(result)
+      });
+    }
 
     var payWithCard = function(stripe, card, clientSecret) {
       stripe
@@ -167,6 +306,11 @@
           }
         });
     };
+
+    // var createOrder = function(result) {
+    //   result.paymentIntent.next_action.boleto_display_details.pdf
+    //   result.paymentIntent.next_action.boleto_display_details.number
+    // }
 
     var orderComplete = function(paymentIntentId) {
       document

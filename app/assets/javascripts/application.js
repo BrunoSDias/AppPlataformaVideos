@@ -18,7 +18,6 @@
 //= require bootstrap
 //= require_tree .
 
-$('.cpf').mask('000.000.000-00', {reverse: true});
 var options =  {
   onKeyPress: function(tel, e, field, options) {
     var masks = ['(00) 0000-00009', '(00) 00000-0000'];
@@ -26,4 +25,6 @@ var options =  {
     $('.tel').mask(mask, options);
 }};
 
+$('.cep').mask('00000-000');
+$('.cpf').mask('000.000.000-00', {reverse: true});
 $('.tel').mask('(00) 0000-00009', options);
