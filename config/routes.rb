@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :sales do
+    get 'orders/index'
+  end
   get '/', to: 'home#index'
   root to: 'home#index'
   
@@ -9,8 +12,6 @@ Rails.application.routes.draw do
 
   namespace :marketplace do
     get '/', to: "home#index"
-    get '/checkout/:course_id', to: 'checkout#index'
-    post '/checkout/create_intent', to: 'checkout#create_intent'
     get 'courses/:id', to: 'courses#show'
   end
 
@@ -20,9 +21,14 @@ Rails.application.routes.draw do
     get '/courses/:course_id', to: 'courses#show'
     get '/courses/:course_id/videos/:id', to: 'videos#show'
     post '/courses/:course_id/videos/:id', to: 'videos#conclude_lesson'
+    get '/checkout/:course_id', to: 'checkout#index'
+    post '/checkout/create_intent', to: 'checkout#create_intent'
+    post '/checkout/create_order', to: 'checkout#create_order'
+    post '/checkout/order_status', to: 'checkout#order_status'
     get 'videos/show'
     get 'courses/show'
     resources :users, except: [ :show, :destroy ] do
+      get '/orders', to: 'users#orders'
       get '/logout', to: 'home#logout'
     end
   end

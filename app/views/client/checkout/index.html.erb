@@ -4,14 +4,13 @@
           <ul class="list-group mb-3">
             <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
-                <h6 class="my-0">Product name</h6>
-                <small class="text-muted">Brief description</small>
+                <h6 class="my-0"><%= @course.nome %></h6>
+                <small class="text-muted"><%= @course.descricao %> </small>
               </div>
-              <span class="text-muted">$12</span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
-              <span>Total (USD)</span>
-              <strong>$20</strong>
+              <span>Total (BRL)</span>
+              <strong><%= number_to_currency(@course.preco) %> </strong>
             </li>
           </ul>
         </div>
@@ -209,7 +208,7 @@
         }
       }
 
-      fetch("/marketplace/checkout/create_intent", {
+      fetch("/client/checkout/create_intent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -249,16 +248,16 @@
       form.addEventListener("submit", function(event) {
         var paymentType = document.querySelector("input[name='paymentMethod']:checked").id
         event.preventDefault();
-        if (paymentType == 'card') {
-          payWithCard(stripe, card, data.clientSecret);
+        if (paymentType == 'credit') {
+          payWithCard(stripe, card, data.clientSecret, paymentType);
         }
         else if (paymentType == 'boleto') {
-          payWithBankSlip(stripe, data.clientSecret);
+          payWithBankSlip(stripe, data.clientSecret, paymentType);
         }
       });
     });
 
-    var payWithBankSlip = function(stripe, clientSecret) {
+    var payWithBankSlip = function(stripe, clientSecret, paymentType) {
       stateSelect = document.getElementById('stateSelect');
       stripe.confirmBoletoPayment(clientSecret,
         {
@@ -285,11 +284,11 @@
             errorMsg.innerText = result.error.message;
           }
 
-          createOrder(result)
+          createOrder(result, paymentType)
       });
     }
 
-    var payWithCard = function(stripe, card, clientSecret) {
+    var payWithCard = function(stripe, card, clientSecret, paymentType) {
       stripe
         .confirmCardPayment(clientSecret, {
           payment_method: {
@@ -301,16 +300,51 @@
             // Show error to your customer
             showError(result.error.message);
           } else {
-            // The payment succeeded!
-            orderComplete(result.paymentIntent.id);
+            createOrder(result, paymentType)
           }
         });
     };
 
-    // var createOrder = function(result) {
-    //   result.paymentIntent.next_action.boleto_display_details.pdf
-    //   result.paymentIntent.next_action.boleto_display_details.number
-    // }
+    var createOrder = function(result, paymentType) {
+      const paymentIntent = result.paymentIntent;
+      let data = {};
+
+      if (paymentType == 'credit') {
+        data = {
+          payment_intent_id: paymentIntent.id,
+          status: paymentIntent.status,
+          authenticity_token: "<%= form_authenticity_token.html_safe %>",
+          sales_course_id: <%= @course.id %>,
+          paymentType: paymentType
+        }
+      } else {
+        data = {
+          payment_intent_id: paymentIntent.id,
+          expires_at: paymentIntent.next_action.boleto_display_details.expires_at,
+          pdf: paymentIntent.next_action.boleto_display_details.pdf,
+          number: paymentIntent.next_action.boleto_display_details.number,
+          authenticity_token: "<%= form_authenticity_token.html_safe %>",
+          sales_course_id: <%= @course.id %>,
+          status: paymentIntent.status,
+          paymentType: paymentType
+        }
+      }
+
+      fetch("/client/checkout/create_order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(function(result) {
+        return result.json();
+      })
+      .then(function(res) {
+        console.log(res);
+        window.location.href = "/";
+      })
+    }
 
     var orderComplete = function(paymentIntentId) {
       document

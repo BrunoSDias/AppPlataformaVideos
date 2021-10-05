@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_07_010402) do
+ActiveRecord::Schema.define(version: 2021_09_28_001812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,22 @@ ActiveRecord::Schema.define(version: 2021_09_07_010402) do
     t.index ["sales_seller_id"], name: "index_sales_courses_on_sales_seller_id"
   end
 
+  create_table "sales_orders", force: :cascade do |t|
+    t.bigint "client_user_id"
+    t.bigint "sales_course_id"
+    t.string "tipo_pagamento"
+    t.decimal "valor_total"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "data_expiracao"
+    t.string "payment_intent_id"
+    t.string "pdf_boleto"
+    t.string "numero_boleto"
+    t.index ["client_user_id"], name: "index_sales_orders_on_client_user_id"
+    t.index ["sales_course_id"], name: "index_sales_orders_on_sales_course_id"
+  end
+
   create_table "sales_sellers", force: :cascade do |t|
     t.string "nome"
     t.string "cpf"
@@ -155,5 +171,7 @@ ActiveRecord::Schema.define(version: 2021_09_07_010402) do
   add_foreign_key "sales_addresses", "sales_sellers"
   add_foreign_key "sales_bank_accounts", "sales_sellers"
   add_foreign_key "sales_courses", "admin_categories"
+  add_foreign_key "sales_orders", "client_users"
+  add_foreign_key "sales_orders", "sales_courses"
   add_foreign_key "sales_videos", "sales_courses"
 end

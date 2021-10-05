@@ -17,6 +17,6 @@ class Client::ApplicationController < ApplicationController
         return
       end
     end
-    redirect_to "/"
+    redirect_to "/login"
   end
 end

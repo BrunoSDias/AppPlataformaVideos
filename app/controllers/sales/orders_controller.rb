@@ -1,9 +1,9 @@
-class Sales::HomeController < Sales::ApplicationController
+class Sales::OrdersController < ApplicationController
   def index
     @orders = Sales::Order
     .joins(:sales_course)
     .joins(:client_user)
-    .where(sales_courses: { sales_seller_id: @seller })
+    .where(sales_courses { sales_seller_id: params[:sales_seller_id] })
     .select("
       sales_orders.id,
       sales_orders.tipo_pagamento,

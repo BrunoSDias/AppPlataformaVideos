@@ -15,7 +15,7 @@
   <script src="https://www.youtube.com/iframe_api" async></script>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag '/client/application.js', 'data-turbolinks-track' => true %>
+  <script src="https://js.stripe.com/v3/"></script>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -37,6 +37,7 @@
           <li><a href="/marketplace">Comprar</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+          <li><a href="/client/users/<%= @user %>/orders">Pedidos</a></li>
           <li><a href="/client/users/<%= @user %>/edit">Editar Perfil</a></li>
           <li><a href="/client/users/<%= @user %>/logout">Sair</a></li>
         </ul>

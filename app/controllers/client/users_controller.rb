@@ -1,5 +1,5 @@
 class Client::UsersController < Client::ApplicationController
-  before_action :set_client_user, only: %i[ show edit update destroy ]
+  before_action :set_client_user, only: %i[ show edit update destroy orders]
 
   # GET /client/users or /client/users.json
   def index
@@ -13,6 +13,23 @@ class Client::UsersController < Client::ApplicationController
 
   # GET /client/users/1/edit
   def edit
+  end
+
+  def orders
+    @orders = @client_user
+    .sales_orders
+    .joins(:sales_course)
+    .distinct
+    .select("
+      sales_orders.id,
+      sales_orders.tipo_pagamento,
+      sales_orders.status,
+      sales_orders.valor_total,
+      sales_orders.data_expiracao,
+      sales_orders.pdf_boleto,
+      sales_courses.id as sales_course_id,
+      sales_courses.nome
+    ")
   end
 
   # POST /client/users or /client/users.json
@@ -46,7 +63,7 @@ class Client::UsersController < Client::ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_client_user
-      @client_user = Client::User.find(params[:id])
+      @client_user = Client::User.find(params[:id] || params[:user_id])
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  client_user: one
+  sales_course: one
+  tipo_pagamento: MyString
+  valor_total: 9.99
+  status: 1
+
+two:
+  client_user: two
+  sales_course: two
+  tipo_pagamento: MyString
+  valor_total: 9.99
+  status: 1
