@@ -28,3 +28,11 @@ var options =  {
 $('.cep').mask('00000-000');
 $('.cpf').mask('000.000.000-00', {reverse: true});
 $('.tel').mask('(00) 0000-00009', options);
+
+function showLoading() {
+  document.getElementById("loading").style.display = "block";
+}
+
+function hideLoading() {
+  document.getElementById("loading").style.display = "none";
+}

@@ -1,4 +1,4 @@
-<form class="form-signin" action="/sigin", method="POST">
+<form class="form-signin" id="form-sigin" action="/sigin", method="POST">
   <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
   <img class="mb-4" src="https://www.vhv.rs/dpng/d/325-3251170_courses-icon-black-and-white-png-download-study.png" alt="" width="72" height="72">
   <h1 class="h3 mb-3 font-weight-normal">Logue-se</h1>
@@ -10,3 +10,9 @@
   <a class="btn btn-sm btn-success btn-block" href="/signup" style="color:#fff;" >Cadastre-se</a>
   <p class="mt-5 mb-3 text-muted">© 2021-<%= Time.now.year %></p>
 </form>
+
+<script>
+  document.getElementById("form-sigin").addEventListener("submit", function(evt) {
+    showLoading();
+  })
+</script>

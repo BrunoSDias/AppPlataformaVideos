@@ -10,7 +10,7 @@
     </ul>
   </div>
 <% end %>
-<form class="form-signin" action="/signup/create", method="POST">
+<form class="form-signin" id="form-signin" action="/signup/create", method="POST">
   <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
   <img class="mb-4" src="https://www.vhv.rs/dpng/d/325-3251170_courses-icon-black-and-white-png-download-study.png" alt="" width="72" height="72">
   <h1 class="h3 mb-3 font-weight-normal">Cadastre-se</h1>
@@ -27,3 +27,10 @@
   <button class="btn btn-lg btn-primary btn-block" type="submit">Enviar</button>
   <p class="mt-5 mb-3 text-muted">© 2021-<%= Time.now.year %></p>
 </form>
+
+
+<script>
+  document.getElementById("form-sigin").addEventListener("submit", function(evt) {
+    showLoading();
+  })
+</script>

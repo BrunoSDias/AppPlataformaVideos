@@ -246,6 +246,7 @@
 
       var form = document.getElementById("payment-form");
       form.addEventListener("submit", function(event) {
+        showLoading();
         var paymentType = document.querySelector("input[name='paymentMethod']:checked").id
         event.preventDefault();
         if (paymentType == 'credit') {
@@ -341,7 +342,7 @@
         return result.json();
       })
       .then(function(res) {
-        console.log(res);
+        hideLoading();
         window.location.href = "/";
       })
     }

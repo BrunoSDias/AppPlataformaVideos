@@ -80,6 +80,7 @@
   }
 
   function handleVideo() {
+    showLoading();
     var title = document.getElementById("sales_video_nome").value;
     if (!title) {
       alert("Deve existir um titulo para o video")
@@ -97,11 +98,13 @@
       contentType: false,
       processData: false,
       success: function(response) {
+        hideLoading();
         $(".formContainer").append("<input type='hidden' name='sales_video[youtube_video_id]' value='" + response.id + "' >");
         $(".hide").removeClass("hide");
         $(".sendVideo").addClass("hide");
       },
       error: function(response)  {
+        hideLoading();
         console.log(response);
       }
     })
