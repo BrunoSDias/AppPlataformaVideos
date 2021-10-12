@@ -69,7 +69,7 @@
 
   function youtubeOauth() {
     var client_id = "826049932659-jelot8fvrvbl517r22k7lljfk37rbfq9.apps.googleusercontent.com"
-    var redirect_uri = "http://localhost:3000/sales/youtube-response"
+    var redirect_uri = "<%= @host %>/sales/youtube-response"
     var scope = ["https://www.googleapis.com/auth/youtube", "https://www.googleapis.com/auth/youtube.upload"]
 
     localStorage.setItem("@AppPlataformaCursos/redirect_route", window.location.href);
