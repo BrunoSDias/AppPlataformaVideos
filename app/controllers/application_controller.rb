@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_host
-    if Rails.env.production
+    if Rails.env == "production"
       @host ||= "https://app-courses-platform.herokuapp.com/"
     else
       @host ||= "http://localhost:3000"
