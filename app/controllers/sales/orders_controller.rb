@@ -3,7 +3,7 @@ class Sales::OrdersController < ApplicationController
     @orders = Sales::Order
     .joins(:sales_course)
     .joins(:client_user)
-    .where(sales_courses { sales_seller_id: params[:sales_seller_id] })
+    .where(sales_courses: { sales_seller_id: params[:sales_seller_id] })
     .select("
       sales_orders.id,
       sales_orders.tipo_pagamento,
