@@ -7,16 +7,30 @@ class Client::CheckoutController < Client::ApplicationController
   end
 
   def create_intent
-    payment_intent = Stripe::PaymentIntent.create(
-      amount: (params[:amount] * 100).to_i,
-      currency: 'brl',
-      payment_method_types: ['card', 'boleto']
-    )
+    if params[:sales_seller_id]
+      @seller = Sales::Seller.find(params[:sales_seller_id])
+      amount = (params[:amount] * 100).to_i
+      fee = amount * 12 / 100
 
-    render json: { clientSecret: payment_intent['client_secret'] }, status: :ok
+      payment_intent = Stripe::PaymentIntent.create({
+        payment_method_types: ['card', 'boleto'],
+        amount: amount,
+        currency: 'brl',
+        application_fee_amount: fee,
+        transfer_data: {
+          destination: @seller.stripe_account_id,
+        },
+      })
+
+      render json: { clientSecret: payment_intent['client_secret'], amount: amount, fee: fee }, status: :ok
+    end
   end
 
   def create_order
+    amount = params[:amount].to_i / 100
+    fee = params[:fee].to_i / 100
+    descounted_value = amount - fee
+
     course = Sales::Course.find(params[:sales_course_id])
     order = Sales::Order.new
     order.client_user_id = @user
@@ -24,7 +38,9 @@ class Client::CheckoutController < Client::ApplicationController
     order.payment_intent_id = params[:payment_intent_id]
     order.data_expiracao = Time.at(params[:expires_at]) if params[:expires_at]
     order.pdf_boleto = params[:pdf]
-    order.valor_total = course.preco
+    order.valor_total = amount
+    order.valor_liquido = descounted_value
+    order.taxa = fee
     order.numero_boleto = params[:number]
     order.status = params[:status] == "succeeded" ? 2 : 1
     order.tipo_pagamento = order.numero_boleto ? 'boleto' : 'cartao'

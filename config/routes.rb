@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  namespace :sales do
-    get 'orders/index'
-  end
   get '/', to: 'home#index'
   root to: 'home#index'
   
@@ -44,6 +41,7 @@ Rails.application.routes.draw do
     get 'home/index'
     get '/youtube-response', to: 'youtube#redirect'
     post '/upload_video', to: 'youtube#upload'
+    get '/retry_stripe', to: 'login#retry_stripe'
     resources :sellers, except: [:index, :new] do
       resources :addresses
       resources :bank_accounts

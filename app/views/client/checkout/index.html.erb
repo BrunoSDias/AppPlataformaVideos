@@ -213,7 +213,7 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({amount: <%= @course.preco %>, authenticity_token: "<%= form_authenticity_token.html_safe %>"})
+        body: JSON.stringify({sales_seller_id: <%= @course.sales_seller_id %>, amount: <%= @course.preco %>, authenticity_token: "<%= form_authenticity_token.html_safe %>"})
       })
       .then(function(result) {
         return result.json();
@@ -246,19 +246,19 @@
 
       var form = document.getElementById("payment-form");
       form.addEventListener("submit", function(event) {
+        event.preventDefault();
         showLoading();
         var paymentType = document.querySelector("input[name='paymentMethod']:checked").id
-        event.preventDefault();
         if (paymentType == 'credit') {
-          payWithCard(stripe, card, data.clientSecret, paymentType);
+          payWithCard(stripe, card, data.clientSecret, paymentType, data.amount, data.fee);
         }
         else if (paymentType == 'boleto') {
-          payWithBankSlip(stripe, data.clientSecret, paymentType);
+          payWithBankSlip(stripe, data.clientSecret, paymentType, data.amount, data.fee);
         }
       });
     });
 
-    var payWithBankSlip = function(stripe, clientSecret, paymentType) {
+    var payWithBankSlip = function(stripe, clientSecret, paymentType, amount, fee) {
       stateSelect = document.getElementById('stateSelect');
       stripe.confirmBoletoPayment(clientSecret,
         {
@@ -285,11 +285,11 @@
             errorMsg.innerText = result.error.message;
           }
 
-          createOrder(result, paymentType)
+          createOrder(result, paymentType, amount, fee)
       });
     }
 
-    var payWithCard = function(stripe, card, clientSecret, paymentType) {
+    var payWithCard = function(stripe, card, clientSecret, paymentType, amount, fee) {
       stripe
         .confirmCardPayment(clientSecret, {
           payment_method: {
@@ -301,12 +301,12 @@
             // Show error to your customer
             showError(result.error.message);
           } else {
-            createOrder(result, paymentType)
+            createOrder(result, paymentType, amount, fee)
           }
         });
     };
 
-    var createOrder = function(result, paymentType) {
+    var createOrder = function(result, paymentType, amount, fee) {
       const paymentIntent = result.paymentIntent;
       let data = {};
 
@@ -316,7 +316,9 @@
           status: paymentIntent.status,
           authenticity_token: "<%= form_authenticity_token.html_safe %>",
           sales_course_id: <%= @course.id %>,
-          paymentType: paymentType
+          paymentType: paymentType,
+          amount: amount,
+          fee: fee
         }
       } else {
         data = {
@@ -327,7 +329,9 @@
           authenticity_token: "<%= form_authenticity_token.html_safe %>",
           sales_course_id: <%= @course.id %>,
           status: paymentIntent.status,
-          paymentType: paymentType
+          paymentType: paymentType,
+          amount: amount,
+          fee: fee
         }
       }
 

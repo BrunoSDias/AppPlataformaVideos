@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_28_001812) do
+ActiveRecord::Schema.define(version: 2021_10_26_004049) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,8 @@ ActiveRecord::Schema.define(version: 2021_09_28_001812) do
     t.string "payment_intent_id"
     t.string "pdf_boleto"
     t.string "numero_boleto"
+    t.decimal "taxa"
+    t.decimal "valor_liquido"
     t.index ["client_user_id"], name: "index_sales_orders_on_client_user_id"
     t.index ["sales_course_id"], name: "index_sales_orders_on_sales_course_id"
   end
@@ -148,6 +150,7 @@ ActiveRecord::Schema.define(version: 2021_09_28_001812) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_account_id"
   end
 
   create_table "sales_videos", force: :cascade do |t|

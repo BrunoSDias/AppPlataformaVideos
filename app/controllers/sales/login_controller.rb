@@ -1,6 +1,6 @@
 class Sales::LoginController < Sales::ApplicationController
   layout "login"
-  before_action :user_logged?, except: [:logout]
+  before_action :user_logged?, except: [:logout, :create]
   skip_before_action :authorize
 
   def index
@@ -20,11 +20,45 @@ class Sales::LoginController < Sales::ApplicationController
     render :index
   end
 
+  def retry_stripe
+    account = Stripe::Account.create({
+      type: 'express',
+    })
+
+    account_links = Stripe::AccountLink.create({
+      account: account.id,
+      refresh_url: 'http://localhost:3000/sales/retry_stripe',
+      return_url: 'http://localhost:3000/sales',
+      type: 'account_onboarding',
+    })
+    
+    if account_links.url
+      Sales::Seller.find(cookies[:seller]).update(stripe_account_id: account.id)
+
+      redirect_to account_links.url
+    end
+  end
+
   def create
     @seller = Sales::Seller.new(sales_seller_params)
     if @seller.save!
       cookies[:seller] = { value: @seller.id, httponly: true }
-      redirect_to sales_root_path
+
+      account = Stripe::Account.create({
+        type: 'express',
+      })
+
+      account_links = Stripe::AccountLink.create({
+        account: account.id,
+        refresh_url: 'http://localhost:3000/sales/retry_stripe',
+        return_url: 'http://localhost:3000/sales',
+        type: 'account_onboarding',
+      })
+
+      if account_links.url
+        @seller.update(stripe_account_id: account.id)
+        redirect_to account_links.url
+      end
       return
     end
     flash[:error] = "Houve um erro ao tentar realizar o cadastro, por favor tente novamente"

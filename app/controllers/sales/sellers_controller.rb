@@ -25,6 +25,7 @@ class Sales::SellersController < Sales::ApplicationController
 
     respond_to do |format|
       if @sales_seller.save
+
         format.html { redirect_to @sales_seller, notice: "Vendedor adicionado com sucesso!" }
         format.json { render :show, status: :created, location: @sales_seller }
       else

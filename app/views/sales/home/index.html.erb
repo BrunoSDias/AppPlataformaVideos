@@ -1,5 +1,6 @@
 <div class="page-header">
-  <h1>Pedidos - Total: <%= @orders.length %></h1>
+  <h1>Pedidos - Qnt: <%= @orders.length %> | Valor Total Recebído: <%= number_to_currency(@orders.sum(:valor_liquido)) %></h1>
+  <%= link_to "Confira seu saldo no stripe", "https://dashboard.stripe.com/test/dashboard", target: '_blank', style: 'font-size: 1.4em;'%>
 </div>
 
 <div class="table-responsive">
@@ -8,7 +9,9 @@
       <tr>
         <th>Id</th>
         <th>Item</th>
-        <th>Valor</th>
+        <th>Valor Líquido</th>
+        <th>Taxa</th>
+        <th>Valor Total</th>
         <th>Cliente</th>
         <th>Status</th>
         <th>Tipo Pagamento</th>
@@ -20,6 +23,8 @@
       <%= content_tag_for(:tr, @orders) do |order| %>
         <td><%= order.id %></td>
         <td><%= link_to order.nome, "/marketplace/courses/#{order.sales_course_id}" %></td>
+        <td><%= order.valor_liquido %></td>
+        <td><%= order.taxa %></td>
         <td><%= order.valor_total %></td>
         <td>
           <%= order.client_user_nome %> <br/>

@@ -1,5 +1,15 @@
 class Sales::HomeController < Sales::ApplicationController
   def index
+    seller = Sales::Seller.find(@seller)
+
+    if seller.stripe_account_id.blank?
+      if seller.destroy
+        cookies[:seller] = nil
+        redirect_to '/sales/signup'
+        return
+      end
+    end
+
     @orders = Sales::Order
     .joins(:sales_course)
     .joins(:client_user)
@@ -9,6 +19,8 @@ class Sales::HomeController < Sales::ApplicationController
       sales_orders.tipo_pagamento,
       sales_orders.status,
       sales_orders.valor_total,
+      sales_orders.valor_liquido,
+      sales_orders.taxa,
       sales_orders.data_expiracao,
       sales_orders.pdf_boleto,
       sales_courses.id as sales_course_id,
