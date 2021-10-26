@@ -50,8 +50,8 @@ class Sales::LoginController < Sales::ApplicationController
 
       account_links = Stripe::AccountLink.create({
         account: account.id,
-        refresh_url: 'http://localhost:3000/sales/retry_stripe',
-        return_url: 'http://localhost:3000/sales',
+        refresh_url: "#{@host}/sales/retry_stripe",
+        return_url: "#{@host}/sales",
         type: 'account_onboarding',
       })
 
